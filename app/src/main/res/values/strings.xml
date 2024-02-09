@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">WebsocketClient</string>
+    <string name="title_activity_chatbox">ChatboxActivity</string>
+</resources>
