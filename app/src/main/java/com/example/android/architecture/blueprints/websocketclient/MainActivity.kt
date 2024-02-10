@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             if (nickname!!.text.toString().isNotEmpty()) {
                 val i = Intent(
                     this@MainActivity,
-                    ChatBoxActivity::class.java
+                    ChatboxActivity::class.java
                 )
 
                 //retreive nickname from EditText and add it to intent extra
