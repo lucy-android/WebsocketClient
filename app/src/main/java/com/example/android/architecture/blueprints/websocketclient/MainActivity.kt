@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         nickname = findViewById<View>(R.id.nickname) as EditText
         btn!!.setOnClickListener {
             //if the nickname is not empty go to chatbox activity and add the nickname to the intent extra
-            if (!nickname!!.text.toString().isEmpty()) {
+            if (nickname!!.text.toString().isNotEmpty()) {
                 val i = Intent(
                     this@MainActivity,
                     ChatBoxActivity::class.java
