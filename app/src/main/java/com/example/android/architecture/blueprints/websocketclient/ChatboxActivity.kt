@@ -1,6 +1,7 @@
 package com.example.android.architecture.blueprints.websocketclient
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
@@ -14,11 +15,14 @@ class ChatboxActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatbox)
         Nickname = intent.extras!!.getString(MainActivity.NICKNAME)
-        try{
-            socket = IO.socket("http://localhost:3000")
+        try {
+            socket = IO.socket("http://10.0.2.2:3000")
+
             socket?.connect()
+            Log.d("APP_TAG", "is the socket connected: ${socket?.connected()}")
             socket?.emit("join", Nickname)
-        } catch (e: URISyntaxException){
+        } catch (e: Exception) {
+            Log.d("APP_TAG", "onCreate: ${e.cause}")
             e.printStackTrace()
         }
     }
