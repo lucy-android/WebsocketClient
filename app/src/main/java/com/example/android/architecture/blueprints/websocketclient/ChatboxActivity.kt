@@ -5,12 +5,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.io.IOException
-import java.net.InetAddress
 
 
 class ChatboxActivity : AppCompatActivity() {
@@ -21,14 +15,16 @@ class ChatboxActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatbox)
         Nickname = intent.extras!!.getString(MainActivity.NICKNAME)
-
-        CoroutineScope(Dispatchers.Default).launch {
-            val host = InetAddress.getLoopbackAddress()
-            Log.d("APP_TAG", "is the address reachable: host.isReachable(1000) = ${host.isReachable(1000)}")
+        CheckInternet.isCheck {
+            Log.d("APP_TAG", "is internet reachable = $it")
         }
 
+        CheckInternet.isCheck( {
+            Log.d("APP_TAG", "is localhost reachable = $it")
+        }, "10.0.2.2", 3_000, 1_500)
+
         try {
-            socket = IO.socket("http://10.0.2.2:3000")
+            socket = IO.socket("http://10.0.2.2:3000/")
 
             socket?.connect()
             Log.d("APP_TAG", "is the socket connected: ${socket?.connected()}")
@@ -36,26 +32,6 @@ class ChatboxActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.d("APP_TAG", "onCreate: ${e.cause}")
             e.printStackTrace()
-        }
-    }
-
-
-    fun isAddressReachable(address: String): Boolean {
-        return try {
-            // Start the process to ping the address
-            val process = Runtime.getRuntime().exec("/system/bin/ping -c 1 $address")
-
-            // Wait for the process to finish
-            val exitCode = process.waitFor()
-
-            // Check if the ping was successful (exit code 0 means success)
-            exitCode == 0
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-            false
         }
     }
 }
