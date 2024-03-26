@@ -48,7 +48,8 @@ android {
 dependencies {
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("com.github.nkzawa:socket.io-client:0.5.0")
+    implementation("dev.gustavoavila:java-android-websocket-client:2.0.2")
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
