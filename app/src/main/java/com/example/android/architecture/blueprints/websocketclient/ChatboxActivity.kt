@@ -32,8 +32,10 @@ class ChatboxActivity : AppCompatActivity() {
     private fun createWebSocketClient() {
         val uri: URI = try {
             // Connect to local host
+            Log.i("WebSocket", "connection")
             URI("ws://10.0.2.2:3000")
         } catch (e: URISyntaxException) {
+            Log.e("WebSocket", "${e.localizedMessage}")
             e.printStackTrace()
             return
         }
@@ -54,11 +56,17 @@ class ChatboxActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onBinaryReceived(data: ByteArray?) {}
-            override fun onPingReceived(data: ByteArray?) {}
-            override fun onPongReceived(data: ByteArray?) {}
+            override fun onBinaryReceived(data: ByteArray?) {
+                Log.i("WebSocket", "Binary received")
+            }
+            override fun onPingReceived(data: ByteArray?) {
+                Log.i("WebSocket", "Ping received")
+            }
+            override fun onPongReceived(data: ByteArray?) {
+                Log.i("WebSocket", "Pong received")
+            }
             override fun onException(e: Exception) {
-                Log.e("WebSocket", e.localizedMessage.toString())
+                Log.e("WebSocket", e.localizedMessage)
             }
 
             override fun onCloseReceived(reason: Int, description: String?) {
