@@ -4,16 +4,19 @@ package com.example.android.architecture.blueprints.websocketclient
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import dev.gustavoavila.websocketclient.WebSocketClient
-import java.net.URI
-import java.net.URISyntaxException
+import com.example.android.architecture.blueprints.websocketclient.client.WebSocketClient
+import com.example.android.architecture.blueprints.websocketclient.client.WebSocketListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
-class ChatboxActivity : AppCompatActivity() {
+class ChatboxActivity : AppCompatActivity(), WebSocketListener {
+
+    private val webSocketClient = WebSocketClient("ws://10.0.2.2:3000")
 
     private var Nickname: String? = null
 
-    private var webSocketClient: WebSocketClient? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatbox)
@@ -22,7 +25,7 @@ class ChatboxActivity : AppCompatActivity() {
             Log.d("APP_TAG", "is internet reachable = $it")
         }
 
-        CheckInternet.isCheck( {
+        CheckInternet.isCheck({
             Log.d("APP_TAG", "is localhost reachable = $it")
         }, "10.0.2.2", 3_000, 1_500)
 
@@ -30,54 +33,23 @@ class ChatboxActivity : AppCompatActivity() {
     }
 
     private fun createWebSocketClient() {
-        val uri: URI = try {
-            // Connect to local host
-            Log.i("WebSocket", "connection")
-            URI("ws://10.0.2.2:3000")
-        } catch (e: URISyntaxException) {
-            Log.e("WebSocket", "${e.localizedMessage}")
-            e.printStackTrace()
-            return
+        GlobalScope.launch(Dispatchers.Main) {
+            webSocketClient.connect(this@ChatboxActivity)
         }
-        webSocketClient = object : WebSocketClient(uri) {
-            override fun onOpen() {
-                Log.i("WebSocket", "Session is starting")
-                webSocketClient?.send("Hello World!")
-            }
 
-            override fun onTextReceived(s: String) {
-                Log.i("WebSocket", "Message received")
-                runOnUiThread {
-                    try {
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-
-            override fun onBinaryReceived(data: ByteArray?) {
-                Log.i("WebSocket", "Binary received")
-            }
-            override fun onPingReceived(data: ByteArray?) {
-                Log.i("WebSocket", "Ping received")
-            }
-            override fun onPongReceived(data: ByteArray?) {
-                Log.i("WebSocket", "Pong received")
-            }
-            override fun onException(e: Exception) {
-                Log.e("WebSocket", e.localizedMessage)
-            }
-
-            override fun onCloseReceived(reason: Int, description: String?) {
-                Log.d("WebSocket", reason.toString())
-            }
-
-
-        }
-        (webSocketClient as WebSocketClient).setConnectTimeout(10000)
-        (webSocketClient as WebSocketClient).setReadTimeout(60000)
-        (webSocketClient as WebSocketClient).enableAutomaticReconnection(5000)
-        (webSocketClient as WebSocketClient).connect()
     }
+
+    override fun onConnected() {
+        Log.d("APP_TAG", "connected!")
+    }
+
+    override fun onMessage(message: String) {
+        Log.d("APP_TAG", "message: $message")
+    }
+
+    override fun onDisconnected() {
+        Log.d("APP_TAG", "disconnected!")
+    }
+
+
 }

@@ -48,7 +48,6 @@ android {
 dependencies {
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("dev.gustavoavila:java-android-websocket-client:2.0.2")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     implementation("androidx.core:core-ktx:1.12.0")
@@ -59,4 +58,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation("io.ktor:ktor-client-android:1.6.4")
+    implementation("io.ktor:ktor-client-websockets:1.6.4")
 }
