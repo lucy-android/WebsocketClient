@@ -29,10 +29,10 @@ class ChatboxActivity : AppCompatActivity(), WebSocketListener {
             Log.d("APP_TAG", "is localhost reachable = $it")
         }, "10.0.2.2", 3_000, 1_500)
 
-        createWebSocketClient()
+        createWebsocketClient()
     }
 
-    private fun createWebSocketClient() {
+    private fun createWebsocketClient() {
         GlobalScope.launch(Dispatchers.Main) {
             webSocketClient.connect(this@ChatboxActivity)
         }
