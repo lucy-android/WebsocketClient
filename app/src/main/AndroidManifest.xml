@@ -16,11 +16,6 @@
         android:theme="@style/Theme.WebsocketClient"
         tools:targetApi="31">
         <activity
-            android:name=".ChatboxActivity"
-            android:exported="false"
-            android:label="@string/title_activity_chatbox"
-            android:theme="@style/Theme.WebsocketClient" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -28,6 +23,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
     </application>
 

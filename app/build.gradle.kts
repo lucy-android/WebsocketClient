@@ -46,6 +46,8 @@ android {
 }
 
 dependencies {
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
