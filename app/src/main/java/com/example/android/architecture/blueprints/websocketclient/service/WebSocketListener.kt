@@ -15,7 +15,6 @@ class WebSocketListener(
     override fun onOpen(webSocket: WebSocket, response: Response) {
         super.onOpen(webSocket, response)
         viewModel.setStatus(true)
-        // webSocket.send("Android Device Connected")
         Log.d(TAG, "onOpen:")
     }
 

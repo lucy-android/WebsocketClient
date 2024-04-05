@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,7 +31,7 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         webSocketListener = WebSocketListener(viewModel)
     }
 
@@ -41,11 +44,26 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (webSocket == null) {
+            webSocket = okHttpClient.newWebSocket(createRequest(), webSocketListener)
+        }
 
-        webSocket = okHttpClient.newWebSocket(createRequest(), webSocketListener)
+        val textViewStatus = view.findViewById<TextView>(R.id.text_view_status)
+        val button = view.findViewById<Button>(R.id.button)
+        val editText = view.findViewById<EditText>(R.id.edit_text)
+        val linearLayout = view.findViewById<LinearLayout>(R.id.linear_layout)
 
-        val textView = view.findViewById<TextView>(R.id.text_view)
-        viewModel.text.observe(viewLifecycleOwner, textView::setText)
+        button.setOnClickListener {
+
+            webSocket?.send("${editText.text}")
+            linearLayout.visibility = View.GONE
+        }
+
+        viewModel.text.observe(viewLifecycleOwner){
+            textViewStatus.visibility = View.VISIBLE
+
+            textViewStatus.text = it
+        }
     }
 
     private fun createRequest(): Request {
