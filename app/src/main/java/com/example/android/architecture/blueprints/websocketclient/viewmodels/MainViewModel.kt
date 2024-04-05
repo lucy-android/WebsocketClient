@@ -12,16 +12,13 @@ class MainViewModel : ViewModel() {
     private val _socketStatus = MutableLiveData(false)
     val socketStatus: LiveData<Boolean> = _socketStatus
 
-    private val _messages = MutableLiveData<Pair<Boolean, String>>()
-    val messages: LiveData<Pair<Boolean, String>> = _messages
-
-    fun addMessage(message: Pair<Boolean, String>) = viewModelScope.launch(Dispatchers.Main) {
-        if (_socketStatus.value == true) {
-            _messages.value = message
-        }
-    }
+    private val _text = MutableLiveData<String>()
+    val text: LiveData<String> = _text
 
     fun setStatus(status: Boolean) = viewModelScope.launch(Dispatchers.Main) {
         _socketStatus.value = status
+    }
+    fun setText(text: String) {
+        _text.postValue(text)
     }
 }

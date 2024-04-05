@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -45,42 +42,10 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val messageET = view.findViewById<EditText>(R.id.messageET)
-        val sendMessageButton  = view.findViewById<ImageButton>(R.id.sendButton)
-        val connectButton = view.findViewById<Button>(R.id.connectButton)
-        val disconnectButton = view.findViewById<Button>(R.id.disconnectButton)
-        val statusTV = view.findViewById<TextView>(R.id.statusTV)
-        val messageTV = view.findViewById<TextView>(R.id.messageTV)
+        webSocket = okHttpClient.newWebSocket(createRequest(), webSocketListener)
 
-        viewModel.socketStatus.observe(viewLifecycleOwner) {
-            statusTV.text = if (it) "Connected" else "Disconnected"
-        }
-
-        var text = ""
-        viewModel.messages.observe(viewLifecycleOwner) {
-            text += "${if (it.first) "You: " else "Other: "} ${it.second}\n"
-
-            messageTV.text = text
-        }
-
-        connectButton.setOnClickListener {
-            webSocket = okHttpClient.newWebSocket(createRequest(), webSocketListener)
-        }
-
-        disconnectButton.setOnClickListener {
-            /**
-             * Cancel vs Close (immidiate vs gracefully)
-             * cancel -> Immediately and violently release resources held by this web socket, discarding any enqueued messages. This does nothing if the web socket has already been closed or canceled.
-             * close -> Attempts to initiate a graceful shutdown of this web socket. Any already-enqueued messages will be transmitted before the close message is sent but subsequent calls to send will
-             *      return false and their messages will not be enqueued.
-             */
-            webSocket?.close(1000, "Canceled manually.")
-        }
-
-        sendMessageButton.setOnClickListener {
-            webSocket?.send(messageET.text.toString())
-            viewModel.addMessage(Pair(true, messageET.text.toString()))
-        }
+        val textView = view.findViewById<TextView>(R.id.text_view)
+        viewModel.text.observe(viewLifecycleOwner, textView::setText)
     }
 
     private fun createRequest(): Request {

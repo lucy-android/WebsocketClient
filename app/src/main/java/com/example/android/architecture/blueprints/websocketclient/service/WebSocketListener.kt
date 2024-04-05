@@ -15,13 +15,13 @@ class WebSocketListener(
     override fun onOpen(webSocket: WebSocket, response: Response) {
         super.onOpen(webSocket, response)
         viewModel.setStatus(true)
-        webSocket.send("Android Device Connected")
+        // webSocket.send("Android Device Connected")
         Log.d(TAG, "onOpen:")
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         super.onMessage(webSocket, text)
-        viewModel.addMessage(Pair(false, text))
+        viewModel.setText(text)
         Log.d(TAG, "onMessage: $text")
     }
 
