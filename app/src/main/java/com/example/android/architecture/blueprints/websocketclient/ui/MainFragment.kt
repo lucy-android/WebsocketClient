@@ -16,6 +16,7 @@ import com.example.android.architecture.blueprints.websocketclient.viewmodels.Ma
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
+import org.json.JSONObject
 
 class MainFragment : Fragment() {
 
@@ -54,8 +55,12 @@ class MainFragment : Fragment() {
         val linearLayout = view.findViewById<LinearLayout>(R.id.linear_layout)
 
         button.setOnClickListener {
-
-            webSocket?.send("${editText.text}")
+            val json = JSONObject().apply {
+                put("isMessage", false)
+                put("isGreeting", true)
+                put("contents", editText.text)
+            }
+            webSocket?.send(json.toString())
             linearLayout.visibility = View.GONE
         }
 
