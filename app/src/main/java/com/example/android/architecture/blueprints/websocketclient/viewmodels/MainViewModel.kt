@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 class MainViewModel : ViewModel() {
 
@@ -18,7 +19,11 @@ class MainViewModel : ViewModel() {
     fun setStatus(status: Boolean) = viewModelScope.launch(Dispatchers.Main) {
         _socketStatus.value = status
     }
+
     fun setText(text: String) {
-        _text.postValue(text)
+        val json = JSONObject(text)
+        if (json.get("isGreeting") == true) {
+            _text.postValue("${json.get("contents")} has joined the chat")
+        }
     }
 }
