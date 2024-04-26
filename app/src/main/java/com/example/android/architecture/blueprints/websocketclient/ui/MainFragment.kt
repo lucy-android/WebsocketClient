@@ -60,7 +60,7 @@ class MainFragment : Fragment() {
                 put("isGreeting", true)
                 put("contents", editText.text)
             }
-            webSocket?.send("/$json")
+            webSocket?.send("$json")
             linearLayout.visibility = View.GONE
         }
 
