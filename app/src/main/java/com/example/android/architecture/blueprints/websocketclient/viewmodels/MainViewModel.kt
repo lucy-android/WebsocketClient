@@ -1,5 +1,7 @@
 package com.example.android.architecture.blueprints.websocketclient.viewmodels
 
+
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +24,8 @@ class MainViewModel : ViewModel() {
 
     fun setText(text: String) {
         val json = JSONObject(text)
+
+        Log.d("APP_TAG", "json: $json")
         if (json.get("isGreeting") == true) {
             _text.postValue("${json.get("contents")} has joined the chat")
         }
