@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.architecture.blueprints.websocketclient.R
 import com.example.android.architecture.blueprints.websocketclient.service.WebSocketListener
+import com.example.android.architecture.blueprints.websocketclient.ui.adapter.GreetingsRecyclerAdapter
 import com.example.android.architecture.blueprints.websocketclient.viewmodels.MainViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,6 +24,9 @@ class MainFragment : Fragment() {
     companion object {
         fun newInstance() = MainFragment()
     }
+
+
+    private val greetingsRecyclerAdapter: GreetingsRecyclerAdapter = GreetingsRecyclerAdapter()
 
     private lateinit var viewModel: MainViewModel
 

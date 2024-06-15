@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import org.json.JSONObject
 
 class MainViewModel : ViewModel() {
@@ -23,11 +24,11 @@ class MainViewModel : ViewModel() {
     }
 
     fun setText(text: String) {
-        val json = JSONObject(text)
-
-        Log.d("APP_TAG", "json: $json")
-        if (json.get("isGreeting") == true) {
-            _text.postValue("${json.get("contents")} has joined the chat")
+        val jsonArray = JSONArray(text)
+        val jsonObject = jsonArray.get(0) as JSONObject
+        Log.d("APP_TAG", "jsonObject: $jsonObject")
+        if (jsonObject.get("isGreeting") == true) {
+            _text.postValue("${jsonObject.get("contents")} has joined the chat")
         }
     }
 }
