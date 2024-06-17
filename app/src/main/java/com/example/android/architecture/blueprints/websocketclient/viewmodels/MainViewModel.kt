@@ -6,10 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.architecture.blueprints.websocketclient.ui.adapter.Contents
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
+
 
 class MainViewModel : ViewModel() {
 
@@ -19,16 +21,24 @@ class MainViewModel : ViewModel() {
     private val _text = MutableLiveData<String>()
     val text: LiveData<String> = _text
 
+    private val _list = MutableLiveData<List<Contents>>()
+    val list: LiveData<List<Contents>> = _list
+
     fun setStatus(status: Boolean) = viewModelScope.launch(Dispatchers.Main) {
         _socketStatus.value = status
     }
-
-    fun setText(text: String) {
-        val jsonArray = JSONArray(text)
-        val jsonObject = jsonArray.get(0) as JSONObject
-        Log.d("APP_TAG", "jsonObject: $jsonObject")
-        if (jsonObject.get("isGreeting") == true) {
-            _text.postValue("${jsonObject.get("contents")} has joined the chat")
+    fun setList(jsonList: String) {
+        val jsonArray = JSONArray(jsonList)
+        val listData = mutableListOf<Contents>()
+        val jArray = jsonArray as JSONArray?
+        if (jArray != null) {
+            for (i in 0 until jArray.length()) {
+                val text1 = (jArray.get(0) as JSONObject).get("contents") as String
+                val contents = Contents(text1)
+                listData.add(contents)
+            }
         }
+        _list.postValue(listData)
+        Log.d("Test", "setList: $jsonArray")
     }
 }

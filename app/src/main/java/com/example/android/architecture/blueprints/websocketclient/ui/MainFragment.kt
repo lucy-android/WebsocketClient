@@ -1,6 +1,7 @@
 package com.example.android.architecture.blueprints.websocketclient.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.example.android.architecture.blueprints.websocketclient.R
 import com.example.android.architecture.blueprints.websocketclient.service.WebSocketListener
 import com.example.android.architecture.blueprints.websocketclient.ui.adapter.GreetingsRecyclerAdapter
@@ -57,6 +59,9 @@ class MainFragment : Fragment() {
         val button = view.findViewById<Button>(R.id.button)
         val editText = view.findViewById<EditText>(R.id.edit_text)
         val linearLayout = view.findViewById<LinearLayout>(R.id.linear_layout)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+
+        recyclerView.adapter = greetingsRecyclerAdapter
 
         button.setOnClickListener {
             val json = JSONObject().apply {
@@ -72,6 +77,13 @@ class MainFragment : Fragment() {
             textViewStatus.visibility = View.VISIBLE
 
             textViewStatus.text = it
+        }
+
+        viewModel.list.observe(viewLifecycleOwner){
+            Log.d("Test", "onViewCreated: I am observed!")
+            Log.d("Test", "onViewCreated: list: $it")
+            recyclerView.visibility = View.VISIBLE
+            greetingsRecyclerAdapter.submitList(it)
         }
     }
 

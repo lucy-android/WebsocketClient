@@ -17,7 +17,7 @@ class GreetingsRecyclerAdapter:
 
         fun bind(contents: Contents) {
             with(binding) {
-
+                binding.textView.text = contents.text
             }
         }
     }
