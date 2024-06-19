@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.architecture.blueprints.websocketclient.databinding.ItemGreetingBinding
 
-class GreetingsRecyclerAdapter:
+class GreetingsRecyclerAdapter :
     ListAdapter<Contents, GreetingsRecyclerAdapter.GreetingsViewHolder>(DiffCallback()) {
 
     inner class GreetingsViewHolder(
@@ -22,24 +22,35 @@ class GreetingsRecyclerAdapter:
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GreetingsRecyclerAdapter.GreetingsViewHolder {
-        return GreetingsViewHolder(ItemGreetingBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): GreetingsRecyclerAdapter.GreetingsViewHolder {
+        return GreetingsViewHolder(
+            ItemGreetingBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
 
     override fun onBindViewHolder(holder: GreetingsViewHolder, position: Int) {
-       val data = getItem(position)
+        val data = getItem(position)
         holder.bind(data)
     }
 }
 
 data class Contents(
-    val text: String
+    val id: Int,
+    val text: String,
+    val isGreeting: Boolean
 )
 
 class DiffCallback : DiffUtil.ItemCallback<Contents>() {
     override fun areItemsTheSame(oldItem: Contents, newItem: Contents): Boolean {
-        return oldItem.text == newItem.text
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: Contents, newItem: Contents): Boolean {

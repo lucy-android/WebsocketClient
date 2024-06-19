@@ -27,7 +27,6 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-
     private val greetingsRecyclerAdapter: GreetingsRecyclerAdapter = GreetingsRecyclerAdapter()
 
     private lateinit var viewModel: MainViewModel
@@ -51,11 +50,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (webSocket == null) {
-            webSocket = okHttpClient.newWebSocket(createRequest(), webSocketListener)
-        }
 
-        val textViewStatus = view.findViewById<TextView>(R.id.text_view_status)
         val button = view.findViewById<Button>(R.id.button)
         val editText = view.findViewById<EditText>(R.id.edit_text)
         val linearLayout = view.findViewById<LinearLayout>(R.id.linear_layout)
@@ -64,6 +59,9 @@ class MainFragment : Fragment() {
         recyclerView.adapter = greetingsRecyclerAdapter
 
         button.setOnClickListener {
+            if (webSocket == null) {
+                webSocket = okHttpClient.newWebSocket(createRequest(), webSocketListener)
+            }
             val json = JSONObject().apply {
                 put("isMessage", false)
                 put("isGreeting", true)
@@ -73,17 +71,11 @@ class MainFragment : Fragment() {
             linearLayout.visibility = View.GONE
         }
 
-        viewModel.text.observe(viewLifecycleOwner){
-            textViewStatus.visibility = View.VISIBLE
-
-            textViewStatus.text = it
-        }
-
-        viewModel.list.observe(viewLifecycleOwner){
+        viewModel.list.observe(viewLifecycleOwner){ list ->
             Log.d("Test", "onViewCreated: I am observed!")
-            Log.d("Test", "onViewCreated: list: $it")
+            Log.d("Test", "onViewCreated: list: $list")
             recyclerView.visibility = View.VISIBLE
-            greetingsRecyclerAdapter.submitList(it)
+            greetingsRecyclerAdapter.submitList(list.filter { contents -> contents.isGreeting })
         }
     }
 

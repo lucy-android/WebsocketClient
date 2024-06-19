@@ -27,14 +27,17 @@ class MainViewModel : ViewModel() {
     fun setStatus(status: Boolean) = viewModelScope.launch(Dispatchers.Main) {
         _socketStatus.value = status
     }
+
     fun setList(jsonList: String) {
         val jsonArray = JSONArray(jsonList)
         val listData = mutableListOf<Contents>()
         val jArray = jsonArray as JSONArray?
         if (jArray != null) {
             for (i in 0 until jArray.length()) {
-                val text1 = (jArray.get(0) as JSONObject).get("contents") as String
-                val contents = Contents(text1)
+                val text1 = (jArray.get(i) as JSONObject).get("contents") as String
+                val id = (jArray.get(i) as JSONObject).get("id") as Int
+                val isGreeting = (jArray.get(i) as JSONObject).get("isGreeting") as Boolean
+                val contents = Contents(id = id, text = text1, isGreeting = isGreeting)
                 listData.add(contents)
             }
         }
