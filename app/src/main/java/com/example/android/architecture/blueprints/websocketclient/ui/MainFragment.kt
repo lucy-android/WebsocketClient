@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -71,11 +70,12 @@ class MainFragment : Fragment() {
             linearLayout.visibility = View.GONE
         }
 
-        viewModel.list.observe(viewLifecycleOwner){ list ->
+        viewModel.list.observe(viewLifecycleOwner) { list ->
             Log.d("Test", "onViewCreated: I am observed!")
             Log.d("Test", "onViewCreated: list: $list")
             recyclerView.visibility = View.VISIBLE
-            greetingsRecyclerAdapter.submitList(list.filter { contents -> contents.isGreeting })
+            greetingsRecyclerAdapter.submitList(list.filter { contents -> contents.isGreeting }
+                .map { it.copy(text = requireContext().getString(R.string.chat_joined, it.text)) })
         }
     }
 

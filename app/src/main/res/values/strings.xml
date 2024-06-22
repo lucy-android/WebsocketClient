@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WebsocketClient</string>
     <string name="title_activity_chatbox">ChatboxActivity</string>
+    <string name="chat_joined">%s has joined the chat</string>
 </resources>
