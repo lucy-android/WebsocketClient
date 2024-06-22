@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.architecture.blueprints.websocketclient.R
 import com.example.android.architecture.blueprints.websocketclient.service.WebSocketListener
 import com.example.android.architecture.blueprints.websocketclient.ui.adapter.GreetingsRecyclerAdapter
+import com.example.android.architecture.blueprints.websocketclient.util.fragment.hideKeyboard
 import com.example.android.architecture.blueprints.websocketclient.viewmodels.MainViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -76,6 +77,7 @@ class MainFragment : Fragment() {
             recyclerView.visibility = View.VISIBLE
             greetingsRecyclerAdapter.submitList(list.filter { contents -> contents.isGreeting }
                 .map { it.copy(text = requireContext().getString(R.string.chat_joined, it.text)) })
+            this.hideKeyboard()
         }
     }
 
