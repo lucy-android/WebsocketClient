@@ -68,6 +68,7 @@
             android:importantForAutofill="no"
             android:layout_weight="1" />
 
+
         <Button
             android:text="@string/chat_send_message_action"
             android:background="@null"
