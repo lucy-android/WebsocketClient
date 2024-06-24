@@ -24,7 +24,10 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <EditText
+            android:autofillHints="username"
+            android:inputType="text"
             android:id="@+id/edit_text"
+            android:hint="@string/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -60,7 +63,9 @@
 
         <EditText
             android:layout_width="0dp"
+            android:inputType="text"
             android:layout_height="wrap_content"
+            android:importantForAutofill="no"
             android:layout_weight="1" />
 
         <Button
