@@ -55,6 +55,8 @@ class MainFragment : Fragment() {
         val editText = view.findViewById<EditText>(R.id.edit_text)
         val linearLayout = view.findViewById<LinearLayout>(R.id.linear_layout)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        val linearLayoutMessage = view.findViewById<LinearLayout>(R.id.linear_layout_message)
+
 
         recyclerView.adapter = greetingsRecyclerAdapter
 
@@ -78,6 +80,7 @@ class MainFragment : Fragment() {
             greetingsRecyclerAdapter.submitList(list.filter { contents -> contents.isGreeting }
                 .map { it.copy(text = requireContext().getString(R.string.chat_joined, it.text)) })
             this.hideKeyboard()
+            linearLayoutMessage.visibility = View.VISIBLE
         }
     }
 

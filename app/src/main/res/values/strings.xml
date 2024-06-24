@@ -2,4 +2,7 @@
     <string name="app_name">WebsocketClient</string>
     <string name="title_activity_chatbox">ChatboxActivity</string>
     <string name="chat_joined">%s has joined the chat</string>
+    <string name="chat_greeting">Enter your name:</string>
+    <string name="chat_send_name_action">Submit</string>
+    <string name="chat_send_message_action">Send message</string>
 </resources>
