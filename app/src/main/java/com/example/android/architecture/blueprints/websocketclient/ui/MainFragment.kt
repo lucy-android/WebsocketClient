@@ -51,26 +51,36 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val button = view.findViewById<Button>(R.id.button)
-        val editText = view.findViewById<EditText>(R.id.edit_text)
+        val buttonEnterName = view.findViewById<Button>(R.id.button_enter_name)
+        val buttonSendMessage = view.findViewById<Button>(R.id.button_send_message)
+        val editTextUserName = view.findViewById<EditText>(R.id.edit_text_user_name)
+        val editTextMessage = view.findViewById<EditText>(R.id.edit_text_message)
         val linearLayout = view.findViewById<LinearLayout>(R.id.linear_layout)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         val linearLayoutMessage = view.findViewById<LinearLayout>(R.id.linear_layout_message)
 
-
         recyclerView.adapter = greetingsRecyclerAdapter
 
-        button.setOnClickListener {
+        buttonEnterName.setOnClickListener {
             if (webSocket == null) {
                 webSocket = okHttpClient.newWebSocket(createRequest(), webSocketListener)
             }
             val json = JSONObject().apply {
                 put("isMessage", false)
                 put("isGreeting", true)
-                put("contents", editText.text)
+                put("contents", editTextUserName.text)
             }
             webSocket?.send("$json")
             linearLayout.visibility = View.GONE
+        }
+
+        buttonSendMessage.setOnClickListener {
+            val json = JSONObject().apply {
+                put("isMessage", true)
+                put("isGreeting", false)
+                put("contents", editTextMessage.text)
+            }
+            webSocket?.send("$json")
         }
 
         viewModel.list.observe(viewLifecycleOwner) { list ->
