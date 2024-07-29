@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android.architecture.blueprints.websocketclient.CheckInternet
 import com.example.android.architecture.blueprints.websocketclient.R
 import com.example.android.architecture.blueprints.websocketclient.service.WebSocketListener
 import com.example.android.architecture.blueprints.websocketclient.ui.adapter.GreetingsRecyclerAdapter
@@ -91,6 +92,10 @@ class MainFragment : Fragment() {
                 .map { it.copy(text = requireContext().getString(R.string.chat_joined, it.text)) })
             this.hideKeyboard()
             linearLayoutMessage.visibility = View.VISIBLE
+        }
+
+        CheckInternet.isCheck {
+            Log.d("APP_TAG", "onViewCreated: the internet is on")
         }
     }
 
