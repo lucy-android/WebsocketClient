@@ -16,9 +16,7 @@ class GreetingsRecyclerAdapter :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(contents: Contents) {
-            with(binding) {
-                binding.textView.text = contents.text
-            }
+            binding.textView.text = contents.text
         }
     }
 
