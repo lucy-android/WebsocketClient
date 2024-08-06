@@ -39,6 +39,10 @@ class MainViewModel : ViewModel() {
                 val isGreeting = (jArray.get(i) as JSONObject).get("isGreeting") as Boolean
                 val contents = Contents(id = id, text = text1, isGreeting = isGreeting)
                 listData.add(contents)
+                if (isGreeting) {
+                    Log.d("APP_TAG", "$text1 has sent us a greeting ")
+                }
+
             }
         }
         _list.postValue(listData)
