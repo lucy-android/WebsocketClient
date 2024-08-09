@@ -21,31 +21,31 @@ class MainViewModel : ViewModel() {
     private val _text = MutableLiveData<String>()
     val text: LiveData<String> = _text
 
-    private val _list = MutableLiveData<List<Contents>>()
-    val list: LiveData<List<Contents>> = _list
+    private val _greetingsData = MutableLiveData<List<Contents>>()
+    val list: LiveData<List<Contents>> = _greetingsData
 
     fun setStatus(status: Boolean) = viewModelScope.launch(Dispatchers.Main) {
         _socketStatus.value = status
     }
 
-    fun setList(jsonList: String) {
+    fun setGreetingsList(jsonList: String) {
         val jsonArray = JSONArray(jsonList)
-        val listData = mutableListOf<Contents>()
+        val greetingsData = mutableListOf<Contents>()
         val jArray = jsonArray as JSONArray?
         if (jArray != null) {
             for (i in 0 until jArray.length()) {
                 val text1 = (jArray.get(i) as JSONObject).get("contents") as String
                 val id = (jArray.get(i) as JSONObject).get("id") as Int
                 val isGreeting = (jArray.get(i) as JSONObject).get("isGreeting") as Boolean
-                val contents = Contents(id = id, text = text1, isGreeting = isGreeting)
-                listData.add(contents)
                 if (isGreeting) {
-                    Log.d("APP_TAG", "$text1 has sent us a greeting ")
+                    val contents = Contents(id = id, text = text1, isGreeting = true)
+                    greetingsData.add(contents)
                 }
-
             }
         }
-        _list.postValue(listData)
-        Log.d("Test", "setList: $jsonArray")
+        val filteredGreetings = greetingsData.filter { it.isGreeting }
+        if (filteredGreetings.isNotEmpty()) {
+            _greetingsData.postValue(greetingsData)
+        }
     }
 }

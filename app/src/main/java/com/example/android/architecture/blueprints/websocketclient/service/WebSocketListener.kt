@@ -20,7 +20,7 @@ class WebSocketListener(
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         super.onMessage(webSocket, text)
-        viewModel.setList(text)
+        viewModel.setGreetingsList(text)
         Log.d(TAG, "onMessage: $text")
     }
 
