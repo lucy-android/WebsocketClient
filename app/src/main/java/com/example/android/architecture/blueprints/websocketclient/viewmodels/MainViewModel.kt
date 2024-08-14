@@ -1,7 +1,6 @@
 package com.example.android.architecture.blueprints.websocketclient.viewmodels
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,7 +21,10 @@ class MainViewModel : ViewModel() {
     val text: LiveData<String> = _text
 
     private val _greetingsData = MutableLiveData<List<Contents>>()
-    val list: LiveData<List<Contents>> = _greetingsData
+    val greetingsData: LiveData<List<Contents>> = _greetingsData
+
+    private val _messageData = MutableLiveData<List<Contents>>()
+    val messageData: LiveData<List<Contents>> = _messageData
 
     fun setStatus(status: Boolean) = viewModelScope.launch(Dispatchers.Main) {
         _socketStatus.value = status

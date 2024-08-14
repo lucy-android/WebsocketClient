@@ -84,7 +84,7 @@ class MainFragment : Fragment() {
             webSocket?.send("$json")
         }
 
-        viewModel.list.observe(viewLifecycleOwner) { list ->
+        viewModel.greetingsData.observe(viewLifecycleOwner) { list ->
             Log.d("Test", "onViewCreated: I am observed!")
             Log.d("Test", "onViewCreated: list: $list")
             recyclerView.visibility = View.VISIBLE
