@@ -33,6 +33,7 @@ class MainViewModel : ViewModel() {
     fun setGreetingsList(jsonList: String) {
         val jsonArray = JSONArray(jsonList)
         val greetingsData = mutableListOf<Contents>()
+        val messageData = mutableListOf<Contents>()
         val jArray = jsonArray as JSONArray?
         if (jArray != null) {
             for (i in 0 until jArray.length()) {
@@ -42,12 +43,17 @@ class MainViewModel : ViewModel() {
                 if (isGreeting) {
                     val contents = Contents(id = id, text = text1, isGreeting = true)
                     greetingsData.add(contents)
+                } else {
+                    val contents = Contents(id = id, text = text1, isGreeting = false)
+                    messageData.add(contents)
                 }
             }
         }
-        val filteredGreetings = greetingsData.filter { it.isGreeting }
-        if (filteredGreetings.isNotEmpty()) {
+
+        if (greetingsData.isNotEmpty()) {
             _greetingsData.postValue(greetingsData)
+        } else if (messageData.isNotEmpty()) {
+            _messageData.postValue(messageData)
         }
     }
 }

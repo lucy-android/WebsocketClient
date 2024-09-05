@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.architecture.blueprints.websocketclient.CheckInternet
 import com.example.android.architecture.blueprints.websocketclient.R
 import com.example.android.architecture.blueprints.websocketclient.service.WebSocketListener
+import com.example.android.architecture.blueprints.websocketclient.ui.adapter.Contents
 import com.example.android.architecture.blueprints.websocketclient.ui.adapter.GreetingsRecyclerAdapter
 import com.example.android.architecture.blueprints.websocketclient.util.fragment.hideKeyboard
 import com.example.android.architecture.blueprints.websocketclient.viewmodels.MainViewModel
@@ -28,7 +29,8 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private val greetingsRecyclerAdapter: GreetingsRecyclerAdapter = GreetingsRecyclerAdapter()
+    private val greetingsRecyclerAdapter = GreetingsRecyclerAdapter()
+    private val messagesRecyclerAdapter = GreetingsRecyclerAdapter()
 
     private lateinit var viewModel: MainViewModel
 
@@ -57,10 +59,10 @@ class MainFragment : Fragment() {
         val editTextUserName = view.findViewById<EditText>(R.id.edit_text_user_name)
         val editTextMessage = view.findViewById<EditText>(R.id.edit_text_message)
         val linearLayout = view.findViewById<LinearLayout>(R.id.linear_layout)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+        val recyclerViewGreetings = view.findViewById<RecyclerView>(R.id.recycler_view_greetings)
         val linearLayoutMessage = view.findViewById<LinearLayout>(R.id.linear_layout_message)
 
-        recyclerView.adapter = greetingsRecyclerAdapter
+        recyclerViewGreetings.adapter = greetingsRecyclerAdapter
 
         buttonEnterName.setOnClickListener {
             if (webSocket == null) {
@@ -87,11 +89,15 @@ class MainFragment : Fragment() {
         viewModel.greetingsData.observe(viewLifecycleOwner) { list ->
             Log.d("Test", "onViewCreated: I am observed!")
             Log.d("Test", "onViewCreated: list: $list")
-            recyclerView.visibility = View.VISIBLE
+            recyclerViewGreetings.visibility = View.VISIBLE
             greetingsRecyclerAdapter.submitList(list.filter { contents -> contents.isGreeting }
                 .map { it.copy(text = requireContext().getString(R.string.chat_joined, it.text)) })
             this.hideKeyboard()
             linearLayoutMessage.visibility = View.VISIBLE
+        }
+
+        viewModel.messageData.observe(viewLifecycleOwner) { list ->
+            messagesRecyclerAdapter.submitList(listOf(Contents(1, "Hello world", false)))
         }
 
         CheckInternet.isCheck {
