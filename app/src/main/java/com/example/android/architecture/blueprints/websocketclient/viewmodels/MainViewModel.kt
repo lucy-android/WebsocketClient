@@ -30,7 +30,7 @@ class MainViewModel : ViewModel() {
         _socketStatus.value = status
     }
 
-    fun setGreetingsList(jsonList: String) {
+    fun setList(jsonList: String) {
         val jsonArray = JSONArray(jsonList)
         val greetingsData = mutableListOf<Contents>()
         val messageData = mutableListOf<Contents>()
@@ -40,11 +40,10 @@ class MainViewModel : ViewModel() {
                 val text1 = (jArray.get(i) as JSONObject).get("contents") as String
                 val id = (jArray.get(i) as JSONObject).get("id") as Int
                 val isGreeting = (jArray.get(i) as JSONObject).get("isGreeting") as Boolean
+                val contents = Contents(id = id, text = text1, isGreeting = isGreeting)
                 if (isGreeting) {
-                    val contents = Contents(id = id, text = text1, isGreeting = true)
                     greetingsData.add(contents)
                 } else {
-                    val contents = Contents(id = id, text = text1, isGreeting = false)
                     messageData.add(contents)
                 }
             }
@@ -52,7 +51,8 @@ class MainViewModel : ViewModel() {
 
         if (greetingsData.isNotEmpty()) {
             _greetingsData.postValue(greetingsData)
-        } else if (messageData.isNotEmpty()) {
+        }
+        if (messageData.isNotEmpty()) {
             _messageData.postValue(messageData)
         }
     }

@@ -16,6 +16,7 @@ import com.example.android.architecture.blueprints.websocketclient.R
 import com.example.android.architecture.blueprints.websocketclient.service.WebSocketListener
 import com.example.android.architecture.blueprints.websocketclient.ui.adapter.Contents
 import com.example.android.architecture.blueprints.websocketclient.ui.adapter.GreetingsRecyclerAdapter
+import com.example.android.architecture.blueprints.websocketclient.ui.adapter.MessagesRecyclerAdapter
 import com.example.android.architecture.blueprints.websocketclient.util.fragment.hideKeyboard
 import com.example.android.architecture.blueprints.websocketclient.viewmodels.MainViewModel
 import okhttp3.OkHttpClient
@@ -30,7 +31,7 @@ class MainFragment : Fragment() {
     }
 
     private val greetingsRecyclerAdapter = GreetingsRecyclerAdapter()
-    private val messagesRecyclerAdapter = GreetingsRecyclerAdapter()
+    private val messagesRecyclerAdapter = MessagesRecyclerAdapter()
 
     private lateinit var viewModel: MainViewModel
 
@@ -60,9 +61,11 @@ class MainFragment : Fragment() {
         val editTextMessage = view.findViewById<EditText>(R.id.edit_text_message)
         val linearLayout = view.findViewById<LinearLayout>(R.id.linear_layout)
         val recyclerViewGreetings = view.findViewById<RecyclerView>(R.id.recycler_view_greetings)
+        val recyclerViewMessages = view.findViewById<RecyclerView>(R.id.recycler_view_messages)
         val linearLayoutMessage = view.findViewById<LinearLayout>(R.id.linear_layout_message)
 
         recyclerViewGreetings.adapter = greetingsRecyclerAdapter
+        recyclerViewMessages.adapter = messagesRecyclerAdapter
 
         buttonEnterName.setOnClickListener {
             if (webSocket == null) {

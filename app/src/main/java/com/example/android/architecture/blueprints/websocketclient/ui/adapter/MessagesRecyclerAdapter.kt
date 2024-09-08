@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.architecture.blueprints.websocketclient.databinding.ItemGreetingBinding
+import com.example.android.architecture.blueprints.websocketclient.databinding.ItemMessageBinding
 
-class GreetingsRecyclerAdapter :
-    ListAdapter<Contents, GreetingsRecyclerAdapter.GreetingsViewHolder>(DiffCallback()) {
+class MessagesRecyclerAdapter :
+    ListAdapter<Contents, MessagesRecyclerAdapter.MessagesViewHolder>(DiffCallback()) {
 
-    inner class GreetingsViewHolder(
+    inner class MessagesViewHolder(
         private var binding:
-        ItemGreetingBinding
+        ItemMessageBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(contents: Contents) {
@@ -22,9 +22,9 @@ class GreetingsRecyclerAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): GreetingsRecyclerAdapter.GreetingsViewHolder {
-        return GreetingsViewHolder(
-            ItemGreetingBinding.inflate(
+    ): MessagesRecyclerAdapter.MessagesViewHolder {
+        return MessagesViewHolder(
+            ItemMessageBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -33,9 +33,8 @@ class GreetingsRecyclerAdapter :
     }
 
 
-    override fun onBindViewHolder(holder: GreetingsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MessagesViewHolder, position: Int) {
         val data = getItem(position)
         holder.bind(data)
     }
 }
-
