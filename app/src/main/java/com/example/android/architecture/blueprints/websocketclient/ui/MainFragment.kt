@@ -30,8 +30,8 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private val greetingsRecyclerAdapter = GreetingsRecyclerAdapter()
-    private val messagesRecyclerAdapter = MessagesRecyclerAdapter()
+    private val greetingsRecyclerAdapter by lazy { GreetingsRecyclerAdapter() }
+    private val messagesRecyclerAdapter by lazy { MessagesRecyclerAdapter() }
 
     private lateinit var viewModel: MainViewModel
 
